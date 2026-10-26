@@ -16,7 +16,16 @@ Mini Project Proyek 3, Case A: **Pelaporan dan Pemantauan Keamanan Makanan MBG**
 
 ## Status
 
-Tahap 0.1: project setup selesai. Fitur aplikasi belum ditambahkan.
+Tahap 0.2: role pengguna dan akun demo selesai. Login belum ditambahkan.
+
+## Akun demo
+
+| Username | Nama | Role | Password |
+|---|---|---|---|
+| `rina` | Bu Rina | Pelapor | `rahasia123` |
+| `budi` | Pak Budi | Pelapor | `rahasia123` |
+| `dedi` | Pak Dedi | Pemantau | `rahasia123` |
+| `sari` | Bu Sari | Koordinator | `rahasia123` |
 
 ## Menjalankan
 
@@ -25,7 +34,8 @@ Tahap 0.1: project setup selesai. Fitur aplikasi belum ditambahkan.
 3. Atur koneksi database di `.env`
 4. `php artisan key:generate`
 5. `php artisan migrate`
-6. `php artisan serve`
+6. `php artisan db:seed`
+7. `php artisan serve`
 
 Buka `http://127.0.0.1:8000`.
 
