@@ -16,10 +16,10 @@ class DemoUserSeeder extends Seeder
     public function run(): void
     {
         $users = [
-            ['username' => 'rina', 'nama_lengkap' => 'Bu Rina', 'role' => 'reporter', 'password' => 'rahasia123'],
-            ['username' => 'budi', 'nama_lengkap' => 'Pak Budi', 'role' => 'reporter', 'password' => 'rahasia123'],
-            ['username' => 'dedi', 'nama_lengkap' => 'Pak Dedi', 'role' => 'reviewer', 'password' => 'rahasia123'],
-            ['username' => 'sari', 'nama_lengkap' => 'Bu Sari', 'role' => 'coordinator', 'password' => 'rahasia123'],
+            ['username' => 'Giorno', 'nama_lengkap' => 'Giorno Giovanna', 'role' => 'reporter', 'password' => 'rahasia123'],
+            ['username' => 'Jotaro', 'nama_lengkap' => 'Jotaro Kujo', 'role' => 'reporter', 'password' => 'rahasia123'],
+            ['username' => 'Dramok', 'nama_lengkap' => 'Dramok Reza Ladesh', 'role' => 'reviewer', 'password' => 'rahasia123'],
+            ['username' => 'Perrell', 'nama_lengkap' => 'Laquarius Brown', 'role' => 'coordinator', 'password' => 'rahasia123'],
         ];
 
         foreach ($users as $data) {

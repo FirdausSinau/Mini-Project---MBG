@@ -22,10 +22,10 @@ Tahap 0.2: role pengguna dan akun demo selesai. Login belum ditambahkan.
 
 | Username | Nama | Role | Password |
 |---|---|---|---|
-| `rina` | Bu Rina | Pelapor | `rahasia123` |
-| `budi` | Pak Budi | Pelapor | `rahasia123` |
-| `dedi` | Pak Dedi | Pemantau | `rahasia123` |
-| `sari` | Bu Sari | Koordinator | `rahasia123` |
+| `Giorno` | Giorno Giovanna | Pelapor | `rahasia123` |
+| `Jotaro` | Jotaro Kujo | Pelapor | `rahasia123` |
+| `Dramok` | Dramok Reza Ladesh | Pemantau | `rahasia123` |
+| `Perrell` | Laquarius Brown | Koordinator | `rahasia123` |
 
 ## Menjalankan
 
