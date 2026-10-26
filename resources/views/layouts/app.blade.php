@@ -10,20 +10,44 @@
     <a href="#main" class="skip-link">Lewati ke konten</a>
 
     <header class="app-header">
-        <a href="{{ route('dashboard') }}" class="app-brand">Lapor MBG</a>
+        <div class="app-header__top">
+            <a href="{{ route('dashboard') }}" class="app-brand">Lapor MBG</a>
 
-        <div class="app-header__actions">
-            <span class="role-badge">{{ auth()->user()->roleLabel() }}</span>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn btn--ghost">Keluar</button>
-            </form>
+            <div class="app-user">
+                <span class="app-user__name">{{ auth()->user()->nama_lengkap }}</span>
+                <span class="role-badge">{{ auth()->user()->roleLabel() }}</span>
+            </div>
         </div>
+
+        <nav class="app-nav" aria-label="Navigasi utama">
+            <a href="{{ route('dashboard') }}"
+               class="app-nav__link {{ request()->routeIs('dashboard') ? 'is-active' : '' }}">
+                Dashboard
+            </a>
+
+            {{-- Link laporan, rekap, dan data induk ditambahkan saat halamannya sudah ada. --}}
+
+            <form method="POST" action="{{ route('logout') }}" class="app-nav__logout">
+                @csrf
+                <button type="submit" class="btn btn--ghost btn--sm">Keluar</button>
+            </form>
+        </nav>
     </header>
 
     <main id="main" class="app-main">
+        @if (session('success'))
+            <div class="alert alert--success">{{ session('success') }}</div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert--danger">{{ session('error') }}</div>
+        @endif
+
         @yield('content')
     </main>
+
+    <footer class="app-footer">
+        <p>Lapor MBG · Mini Project Proyek 3</p>
+    </footer>
 </body>
 </html>

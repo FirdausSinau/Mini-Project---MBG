@@ -333,13 +333,16 @@ summary:focus-visible {
 }
 
 .app-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.app-header__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1rem clamp(1rem, 4vw, 2.5rem);
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+    padding: 1rem clamp(1rem, 4vw, 2.5rem) .75rem;
 }
 
 .app-brand {
@@ -350,10 +353,56 @@ summary:focus-visible {
     text-decoration: none;
 }
 
-.app-header__actions {
+.app-user {
     display: flex;
     align-items: center;
-    gap: .75rem;
+    gap: .65rem;
+    min-width: 0;
+}
+
+.app-user__name {
+    font-size: .9rem;
+    font-weight: 650;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-nav {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: 0 clamp(1rem, 4vw, 2.5rem) .85rem;
+    overflow-x: auto;
+}
+
+.app-nav__link {
+    padding: .45rem .75rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-muted);
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.app-nav__link:hover {
+    background: #f3f4f6;
+    color: var(--color-ink);
+}
+
+.app-nav__link.is-active {
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark);
+}
+
+.app-nav__logout {
+    margin-left: auto;
+}
+
+.btn--sm {
+    padding: .45rem .75rem;
+    font-size: .85rem;
 }
 
 .role-badge {
@@ -409,6 +458,65 @@ summary:focus-visible {
 .card p {
     margin-bottom: 0;
     color: var(--color-muted);
+}
+
+.app-footer {
+    width: min(100% - 2rem, 68rem);
+    margin: 0 auto;
+    padding: 2rem 0 2.5rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-size: .8rem;
+}
+
+.app-footer p {
+    margin: 0;
+}
+
+.role-guide {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.role-guide .card {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.role-guide .badge {
+    align-self: flex-start;
+}
+
+.role-guide h2 {
+    margin: 0;
+}
+
+.role-guide p {
+    margin: 0;
+}
+
+.check-list {
+    display: grid;
+    gap: .55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.check-list li {
+    position: relative;
+    padding-left: 1.35rem;
+    color: var(--color-muted);
+}
+
+.check-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: 800;
 }
 
 .landing-page {
@@ -488,13 +596,19 @@ summary:focus-visible {
     }
 }
 
+@media (max-width: 900px) {
+    .role-guide {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 520px) {
-    .app-header {
+    .app-header__top {
         align-items: flex-start;
         flex-direction: column;
     }
 
-    .app-header__actions {
+    .app-user {
         width: 100%;
         justify-content: space-between;
     }
