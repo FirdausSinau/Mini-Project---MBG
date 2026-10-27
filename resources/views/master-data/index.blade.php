@@ -77,6 +77,7 @@
                             <th>Nama</th>
                             <th>Kota</th>
                             <th>Distribusi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,10 +86,25 @@
                                 <td>{{ $school->nama }}</td>
                                 <td>{{ $school->kota ?? '-' }}</td>
                                 <td>{{ $school->distributions_count }}</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="{{ route('schools.edit', $school) }}" class="btn btn--ghost btn--sm">
+                                            Edit
+                                        </a>
+
+                                        <form method="POST"
+                                              action="{{ route('schools.destroy', $school) }}"
+                                              onsubmit="return confirm('Hapus sekolah ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn--danger btn--sm">Hapus</button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="empty-state">Belum ada sekolah.</td>
+                                <td colspan="4" class="empty-state">Belum ada sekolah.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -167,6 +183,7 @@
                             <th>Tanggal</th>
                             <th>Sekolah</th>
                             <th>Menu</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -175,10 +192,25 @@
                                 <td>{{ $distribution->tanggal->format('d M Y') }}</td>
                                 <td>{{ $distribution->school->nama }}</td>
                                 <td>{{ $distribution->menu ?? '-' }}</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <a href="{{ route('distributions.edit', $distribution) }}" class="btn btn--ghost btn--sm">
+                                            Edit
+                                        </a>
+
+                                        <form method="POST"
+                                              action="{{ route('distributions.destroy', $distribution) }}"
+                                              onsubmit="return confirm('Hapus distribusi ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn--danger btn--sm">Hapus</button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="empty-state">Belum ada distribusi.</td>
+                                <td colspan="4" class="empty-state">Belum ada distribusi.</td>
                             </tr>
                         @endforelse
                     </tbody>

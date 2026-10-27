@@ -120,6 +120,16 @@ summary:focus-visible {
     background: #f3f4f6;
 }
 
+.btn--danger {
+    background: var(--color-danger);
+    color: #fff;
+}
+
+.btn--danger:hover {
+    background: #991b1b;
+    color: #fff;
+}
+
 .btn--block {
     width: 100%;
 }
@@ -526,6 +536,10 @@ summary:focus-visible {
     align-items: start;
 }
 
+.form-card {
+    max-width: 42rem;
+}
+
 .section-heading {
     display: flex;
     align-items: center;
@@ -553,6 +567,7 @@ summary:focus-visible {
 .form-actions {
     display: flex;
     justify-content: flex-end;
+    gap: .5rem;
 }
 
 .form-field select {
@@ -616,6 +631,16 @@ summary:focus-visible {
     padding: 1.5rem;
     text-align: center;
     color: var(--color-muted);
+}
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.table-actions form {
+    margin: 0;
 }
 
 .landing-page {

@@ -21,6 +21,14 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'can:manage-master-data'])->group(function () {
     Route::get('/master-data', [MasterDataController::class, 'index'])->name('master-data.index');
+
     Route::post('/schools', [MasterDataController::class, 'storeSchool'])->name('schools.store');
+    Route::get('/schools/{school}/edit', [MasterDataController::class, 'editSchool'])->name('schools.edit');
+    Route::patch('/schools/{school}', [MasterDataController::class, 'updateSchool'])->name('schools.update');
+    Route::delete('/schools/{school}', [MasterDataController::class, 'destroySchool'])->name('schools.destroy');
+
     Route::post('/distributions', [MasterDataController::class, 'storeDistribution'])->name('distributions.store');
+    Route::get('/distributions/{distribution}/edit', [MasterDataController::class, 'editDistribution'])->name('distributions.edit');
+    Route::patch('/distributions/{distribution}', [MasterDataController::class, 'updateDistribution'])->name('distributions.update');
+    Route::delete('/distributions/{distribution}', [MasterDataController::class, 'destroyDistribution'])->name('distributions.destroy');
 });
