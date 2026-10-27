@@ -28,9 +28,10 @@
             </div>
 
             <div class="card">
-                <span class="badge">Berikutnya</span>
-                <h2>Fitur laporan segera hadir</h2>
-                <p>Form laporan, upload bukti, dan daftar laporan akan ditambahkan pada langkah berikutnya.</p>
+                <span class="badge">Mulai</span>
+                <h2>Buat laporan</h2>
+                <p>Laporkan kejadian dengan konteks sekolah dan distribusi.</p>
+                <a href="{{ route('reports.create') }}" class="btn btn--primary">Buat laporan</a>
             </div>
         </section>
     @elseif (auth()->user()->isReviewer())

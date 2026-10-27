@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,4 +32,9 @@ Route::middleware(['auth', 'can:manage-master-data'])->group(function () {
     Route::get('/distributions/{distribution}/edit', [MasterDataController::class, 'editDistribution'])->name('distributions.edit');
     Route::patch('/distributions/{distribution}', [MasterDataController::class, 'updateDistribution'])->name('distributions.update');
     Route::delete('/distributions/{distribution}', [MasterDataController::class, 'destroyDistribution'])->name('distributions.destroy');
+});
+
+Route::middleware(['auth', 'can:create-report'])->group(function () {
+    Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
+    Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
 });

@@ -25,6 +25,13 @@
                 Dashboard
             </a>
 
+            @if (auth()->user()->isReporter())
+                <a href="{{ route('reports.create') }}"
+                   class="app-nav__link {{ request()->routeIs('reports.create') ? 'is-active' : '' }}">
+                    Buat Laporan
+                </a>
+            @endif
+
             @if (auth()->user()->isCoordinator())
                 <a href="{{ route('master-data.index') }}"
                    class="app-nav__link {{ request()->routeIs('master-data.*') ? 'is-active' : '' }}">

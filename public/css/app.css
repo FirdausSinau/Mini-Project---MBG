@@ -280,9 +280,41 @@ summary:focus-visible {
     border-color: var(--color-danger);
 }
 
+.form-field textarea {
+    width: 100%;
+    padding: .7rem .8rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: var(--color-ink);
+    font: inherit;
+    resize: vertical;
+}
+
+.form-field textarea:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(15, 92, 85, .12);
+}
+
+.form-field textarea[aria-invalid="true"] {
+    border-color: var(--color-danger);
+}
+
 .form-error {
     margin: 0;
     color: var(--color-danger);
+    font-size: .82rem;
+}
+
+.optional {
+    color: var(--color-muted);
+    font-weight: 400;
+}
+
+.form-help {
+    margin: 0;
+    color: var(--color-muted);
     font-size: .82rem;
 }
 
@@ -304,6 +336,12 @@ summary:focus-visible {
     background: var(--color-success-soft);
     border-color: #bbf7d0;
     color: var(--color-success);
+}
+
+.alert--info {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
 }
 
 .demo-accounts {
@@ -496,6 +534,10 @@ summary:focus-visible {
 }
 
 .role-guide .badge {
+    align-self: flex-start;
+}
+
+.role-guide .btn {
     align-self: flex-start;
 }
 

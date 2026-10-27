@@ -24,5 +24,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-master-data', function (User $user): bool {
             return $user->isCoordinator();
         });
+
+        Gate::define('create-report', function (User $user): bool {
+            return $user->isReporter();
+        });
     }
 }
