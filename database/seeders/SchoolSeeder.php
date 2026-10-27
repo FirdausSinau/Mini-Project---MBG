@@ -16,9 +16,9 @@ class SchoolSeeder extends Seeder
     public function run(): void
     {
         $schools = [
-            ['nama' => 'SMP Harapan', 'alamat' => 'Jl. Melati No. 10', 'kota' => 'Bandung'],
-            ['nama' => 'SDN Melati', 'alamat' => 'Jl. Kenanga No. 4', 'kota' => 'Bandung'],
-            ['nama' => 'SMA Nusantara', 'alamat' => 'Jl. Cendana No. 21', 'kota' => 'Jakarta'],
+            ['nama' => 'SMP 2 Mlati Sleman', 'alamat' => 'Jl. Melati No. 10', 'kota' => 'Sleman'],
+            ['nama' => 'SD Muhammadiyah Kutoarjo', 'alamat' => 'Jl. Kenanga No. 4', 'kota' => 'Purworejo'],
+            ['nama' => 'SMA Jujutsu', 'alamat' => 'Jl. Cendana No. 21', 'kota' => 'Tokyo'],
         ];
 
         foreach ($schools as $school) {
