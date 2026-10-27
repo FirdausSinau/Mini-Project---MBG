@@ -25,7 +25,14 @@
                 Dashboard
             </a>
 
-            {{-- Link laporan, rekap, dan data induk ditambahkan saat halamannya sudah ada. --}}
+            @if (auth()->user()->isCoordinator())
+                <a href="{{ route('master-data.index') }}"
+                   class="app-nav__link {{ request()->routeIs('master-data.*') ? 'is-active' : '' }}">
+                    Data Induk
+                </a>
+            @endif
+
+            {{-- Link laporan dan rekap ditambahkan saat halamannya sudah ada. --}}
 
             <form method="POST" action="{{ route('logout') }}" class="app-nav__logout">
                 @csrf
