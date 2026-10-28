@@ -10,6 +10,8 @@ use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
 use App\Models\Report;
 use App\Models\School;
+use App\Services\ReportService;
+use DomainException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -144,22 +146,25 @@ class ReportController extends Controller
         return view('reports.show', compact('report', 'relatedReports', 'decisions'));
     }
 
-    public function review(ReviewReportRequest $request, Report $report): RedirectResponse
-    {
-        if ($report->status !== ReportStatus::Baru) {
-            return redirect()
-                ->route('reports.show', $report)
-                ->with('error', 'Laporan ini sudah ditinjau dan tidak bisa ditinjau ulang.');
-        }
-
+    public function review(
+        ReviewReportRequest $request,
+        Report $report,
+        ReportService $service
+    ): RedirectResponse {
         $data = $request->validated();
 
-        $report->update([
-            'status' => ReviewDecision::from($data['decision'])->status(),
-            'review_note' => $data['note'],
-            'reviewed_by' => $request->user()->id,
-            'reviewed_at' => now(),
-        ]);
+        try {
+            $service->review(
+                $report,
+                ReviewDecision::from($data['decision']),
+                $data['note'],
+                $request->user(),
+            );
+        } catch (DomainException $exception) {
+            return redirect()
+                ->route('reports.show', $report)
+                ->with('error', $exception->getMessage());
+        }
 
         return redirect()
             ->route('reports.show', $report)
