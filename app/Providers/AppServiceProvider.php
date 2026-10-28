@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Report;
 use App\Models\User;
+use App\Observers\ReportObserver;
 use App\Policies\ReportPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -32,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::policy(Report::class, ReportPolicy::class);
+
+        Report::observe(ReportObserver::class);
     }
 }
