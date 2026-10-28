@@ -55,6 +55,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/reports/{report}', [ReportController::class, 'update'])
         ->whereNumber('report')
         ->name('reports.update');
+    Route::post('/reports/{report}/review', [ReportController::class, 'review'])
+        ->whereNumber('report')
+        ->name('reports.review');
     Route::get('/reports/{report}/evidence', [ReportEvidenceController::class, 'show'])
         ->whereNumber('report')
         ->name('reports.evidence');

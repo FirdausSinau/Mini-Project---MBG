@@ -96,8 +96,73 @@
 
         <section class="card">
             <h2>Catatan peninjauan</h2>
-            <p>Belum ada catatan. Peninjauan akan dilakukan oleh Pemantau.</p>
+
+            @if ($report->review_note)
+                <p class="report-description">{{ $report->review_note }}</p>
+                <p class="form-help">
+                    Ditinjau oleh {{ $report->reviewer?->nama_lengkap ?? 'Pemantau' }}
+                    pada {{ $report->reviewed_at?->format('d M Y H:i') }}
+                </p>
+            @else
+                <p>Belum ada catatan. Peninjauan akan dilakukan oleh Pemantau.</p>
+            @endif
         </section>
+
+        @can('review', $report)
+            @if ($report->status === \App\Enums\ReportStatus::Baru)
+                <section class="card detail-grid__full">
+                    <h2>Form peninjauan</h2>
+
+                    <form method="POST"
+                          action="{{ route('reports.review', $report) }}"
+                          class="form form--grid">
+                        @csrf
+
+                        <div class="form-field">
+                            <label for="decision">Keputusan</label>
+                            <select
+                                id="decision"
+                                name="decision"
+                                required
+                                @error('decision') aria-invalid="true" aria-describedby="decision-error" @enderror
+                            >
+                                <option value="">Pilih keputusan</option>
+                                @foreach ($decisions as $decision)
+                                    <option value="{{ $decision->value }}" @selected(old('decision') === $decision->value)>
+                                        {{ $decision->label() }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('decision')
+                                <p id="decision-error" class="form-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-field form-field--full">
+                            <label for="note">Catatan peninjauan</label>
+                            <textarea
+                                id="note"
+                                name="note"
+                                rows="5"
+                                required
+                                minlength="10"
+                                maxlength="1000"
+                                placeholder="Jelaskan alasan keputusan ini."
+                                @error('note') aria-invalid="true" aria-describedby="note-error" @enderror
+                            >{{ old('note') }}</textarea>
+                            <p class="form-help">Minimal 10 karakter. Catatan akan dibaca Pelapor.</p>
+                            @error('note')
+                                <p id="note-error" class="form-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-actions form-field--full">
+                            <button type="submit" class="btn btn--primary">Simpan peninjauan</button>
+                        </div>
+                    </form>
+                </section>
+            @endif
+        @endcan
     </div>
 
     <div class="page-actions">

@@ -21,4 +21,9 @@ class ReportPolicy
                 ReportStatus::PerluPerbaikan,
             ], true);
     }
+
+    public function review(User $user, Report $report): bool
+    {
+        return $user->isReviewer();
+    }
 }

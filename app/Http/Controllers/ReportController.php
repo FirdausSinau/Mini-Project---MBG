@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ReportStatus;
+use App\Enums\ReviewDecision;
 use App\Http\Requests\ReportFilterRequest;
+use App\Http\Requests\ReviewReportRequest;
 use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
 use App\Models\Report;
@@ -125,7 +127,7 @@ class ReportController extends Controller
     {
         Gate::authorize('view', $report);
 
-        $report->load('distribution.school', 'reporter');
+        $report->load('distribution.school', 'reporter', 'reviewer');
 
         $relatedReports = collect();
 
@@ -137,6 +139,30 @@ class ReportController extends Controller
                 ->get();
         }
 
-        return view('reports.show', compact('report', 'relatedReports'));
+        $decisions = ReviewDecision::cases();
+
+        return view('reports.show', compact('report', 'relatedReports', 'decisions'));
+    }
+
+    public function review(ReviewReportRequest $request, Report $report): RedirectResponse
+    {
+        if ($report->status !== ReportStatus::Baru) {
+            return redirect()
+                ->route('reports.show', $report)
+                ->with('error', 'Laporan ini sudah ditinjau dan tidak bisa ditinjau ulang.');
+        }
+
+        $data = $request->validated();
+
+        $report->update([
+            'status' => ReviewDecision::from($data['decision'])->status(),
+            'review_note' => $data['note'],
+            'reviewed_by' => $request->user()->id,
+            'reviewed_at' => now(),
+        ]);
+
+        return redirect()
+            ->route('reports.show', $report)
+            ->with('success', 'Peninjauan berhasil disimpan.');
     }
 }
