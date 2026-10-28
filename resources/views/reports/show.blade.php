@@ -120,6 +120,109 @@
             @endif
         </section>
 
+        @if ($report->referred_at)
+            <section class="card">
+                <h2>Penerusan</h2>
+                <dl class="detail-list">
+                    <div>
+                        <dt>Pihak tujuan</dt>
+                        <dd>
+                            {{ $report->referral_party_type?->label() }}
+                            - {{ $report->referral_party_name }}
+                        </dd>
+                    </div>
+                    @if ($report->referral_note)
+                        <div>
+                            <dt>Catatan penerusan</dt>
+                            <dd class="report-description">{{ $report->referral_note }}</dd>
+                        </div>
+                    @endif
+                    <div>
+                        <dt>Dicatat oleh</dt>
+                        <dd>
+                            {{ $report->referrer?->nama_lengkap ?? 'Koordinator' }}
+                            pada {{ $report->referred_at->format('d M Y H:i') }}
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+        @elseif ($report->status === \App\Enums\ReportStatus::PerluDiteruskan)
+            <section class="card">
+                <h2>Penerusan</h2>
+                <p>Laporan ditandai perlu diteruskan. Menunggu Koordinator mencatat penerusan.</p>
+            </section>
+        @endif
+
+        @can('refer', $report)
+            @if ($report->status === \App\Enums\ReportStatus::PerluDiteruskan)
+                <section class="card detail-grid__full">
+                    <h2>Form penerusan</h2>
+
+                    <form method="POST"
+                          action="{{ route('reports.referral', $report) }}"
+                          class="form form--grid">
+                        @csrf
+
+                        <div class="form-field">
+                            <label for="party_type">Jenis pihak</label>
+                            <select
+                                id="party_type"
+                                name="party_type"
+                                required
+                                @error('party_type') aria-invalid="true" aria-describedby="party_type-error" @enderror
+                            >
+                                <option value="">Pilih jenis pihak</option>
+                                @foreach ($partyTypes as $partyType)
+                                    <option value="{{ $partyType->value }}" @selected(old('party_type') === $partyType->value)>
+                                        {{ $partyType->label() }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('party_type')
+                                <p id="party_type-error" class="form-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-field">
+                            <label for="party_name">Nama pihak</label>
+                            <input
+                                id="party_name"
+                                name="party_name"
+                                type="text"
+                                value="{{ old('party_name') }}"
+                                maxlength="150"
+                                required
+                                @error('party_name') aria-invalid="true" aria-describedby="party_name-error" @enderror
+                            >
+                            @error('party_name')
+                                <p id="party_name-error" class="form-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-field form-field--full">
+                            <label for="referral_note">
+                                Catatan penerusan <span class="optional">(opsional)</span>
+                            </label>
+                            <textarea
+                                id="referral_note"
+                                name="note"
+                                rows="4"
+                                maxlength="1000"
+                                @error('note') aria-invalid="true" aria-describedby="referral_note-error" @enderror
+                            >{{ old('note') }}</textarea>
+                            @error('note')
+                                <p id="referral_note-error" class="form-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-actions form-field--full">
+                            <button type="submit" class="btn btn--primary">Simpan penerusan</button>
+                        </div>
+                    </form>
+                </section>
+            @endif
+        @endcan
+
         @can('review', $report)
             @if ($report->status === \App\Enums\ReportStatus::Baru)
                 <section class="card detail-grid__full">

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReferralParty;
 use App\Enums\ReportStatus;
 use App\Enums\ReviewDecision;
+use App\Http\Requests\ReferReportRequest;
 use App\Http\Requests\ReportFilterRequest;
 use App\Http\Requests\ReviewReportRequest;
 use App\Http\Requests\StoreReportRequest;
@@ -129,7 +131,7 @@ class ReportController extends Controller
     {
         Gate::authorize('view', $report);
 
-        $report->load('distribution.school', 'reporter', 'reviewer');
+        $report->load('distribution.school', 'reporter', 'reviewer', 'referrer');
 
         $relatedReports = collect();
 
@@ -142,8 +144,9 @@ class ReportController extends Controller
         }
 
         $decisions = ReviewDecision::cases();
+        $partyTypes = ReferralParty::cases();
 
-        return view('reports.show', compact('report', 'relatedReports', 'decisions'));
+        return view('reports.show', compact('report', 'relatedReports', 'decisions', 'partyTypes'));
     }
 
     public function review(
@@ -186,5 +189,31 @@ class ReportController extends Controller
         return redirect()
             ->route('reports.show', $report)
             ->with('success', 'Laporan berhasil dikirim ulang.');
+    }
+
+    public function refer(
+        ReferReportRequest $request,
+        Report $report,
+        ReportService $service
+    ): RedirectResponse {
+        $data = $request->validated();
+
+        try {
+            $service->refer(
+                $report,
+                ReferralParty::from($data['party_type']),
+                $data['party_name'],
+                $data['note'] ?? null,
+                $request->user(),
+            );
+        } catch (DomainException $exception) {
+            return redirect()
+                ->route('reports.show', $report)
+                ->with('error', $exception->getMessage());
+        }
+
+        return redirect()
+            ->route('reports.show', $report)
+            ->with('success', 'Penerusan berhasil dicatat.');
     }
 }

@@ -61,6 +61,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/reports/{report}/resubmit', [ReportController::class, 'resubmit'])
         ->whereNumber('report')
         ->name('reports.resubmit');
+    Route::post('/reports/{report}/referral', [ReportController::class, 'refer'])
+        ->whereNumber('report')
+        ->name('reports.referral');
     Route::get('/reports/{report}/evidence', [ReportEvidenceController::class, 'show'])
         ->whereNumber('report')
         ->name('reports.evidence');

@@ -32,4 +32,10 @@ class ReportPolicy
         return $user->id === $report->user_id
             && $report->status === ReportStatus::PerluPerbaikan;
     }
+
+    public function refer(User $user, Report $report): bool
+    {
+        return $user->isCoordinator()
+            && $report->status === ReportStatus::PerluDiteruskan;
+    }
 }

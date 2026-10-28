@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ReferralParty;
 use App\Enums\ReportStatus;
 use Database\Factories\ReportFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -46,6 +47,7 @@ class Report extends Model
             'incident_at' => 'datetime',
             'status' => ReportStatus::class,
             'reviewed_at' => 'datetime',
+            'referral_party_type' => ReferralParty::class,
             'referred_at' => 'datetime',
             'closed_at' => 'datetime',
         ];

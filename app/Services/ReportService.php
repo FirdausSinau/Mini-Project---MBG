@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ReferralParty;
 use App\Enums\ReportStatus;
 use App\Enums\ReviewDecision;
 use App\Models\Report;
@@ -37,6 +38,25 @@ class ReportService
         return $report;
     }
 
+    public function refer(
+        Report $report,
+        ReferralParty $partyType,
+        string $partyName,
+        ?string $note,
+        User $coordinator
+    ): Report {
+        $this->transitionTo($report, ReportStatus::Diteruskan, 'diteruskan');
+
+        $report->referral_party_type = $partyType;
+        $report->referral_party_name = $partyName;
+        $report->referral_note = $note;
+        $report->referred_by = $coordinator->id;
+        $report->referred_at = now();
+        $report->save();
+
+        return $report;
+    }
+
     private function transitionTo(
         Report $report,
         ReportStatus $nextStatus,
@@ -61,6 +81,7 @@ class ReportService
                 ReportStatus::PerluPerbaikan,
             ], true),
             ReportStatus::PerluPerbaikan => $to === ReportStatus::Baru,
+            ReportStatus::PerluDiteruskan => $to === ReportStatus::Diteruskan,
             default => false,
         };
     }
