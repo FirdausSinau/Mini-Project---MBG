@@ -22,4 +22,16 @@ enum ReportStatus: string
             self::Selesai => 'Selesai Dipantau',
         };
     }
+
+    public function badgeClass(): string
+    {
+        return match ($this) {
+            self::Baru => 'status-badge--baru',
+            self::Ditinjau => 'status-badge--ditinjau',
+            self::PerluPerbaikan => 'status-badge--perlu-perbaikan',
+            self::PerluDiteruskan => 'status-badge--perlu-diteruskan',
+            self::Diteruskan => 'status-badge--diteruskan',
+            self::Selesai => 'status-badge--selesai',
+        };
+    }
 }

@@ -32,6 +32,13 @@
                 </a>
             @endif
 
+            @if (auth()->user()->isReporter())
+                <a href="{{ route('reports.index') }}"
+                   class="app-nav__link {{ request()->routeIs(['reports.index', 'reports.show']) ? 'is-active' : '' }}">
+                    Laporan Saya
+                </a>
+            @endif
+
             @if (auth()->user()->isCoordinator())
                 <a href="{{ route('master-data.index') }}"
                    class="app-nav__link {{ request()->routeIs('master-data.*') ? 'is-active' : '' }}">
