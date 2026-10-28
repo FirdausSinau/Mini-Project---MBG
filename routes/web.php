@@ -49,6 +49,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/{report}', [ReportController::class, 'show'])
         ->whereNumber('report')
         ->name('reports.show');
+    Route::get('/reports/{report}/edit', [ReportController::class, 'edit'])
+        ->whereNumber('report')
+        ->name('reports.edit');
+    Route::patch('/reports/{report}', [ReportController::class, 'update'])
+        ->whereNumber('report')
+        ->name('reports.update');
     Route::get('/reports/{report}/evidence', [ReportEvidenceController::class, 'show'])
         ->whereNumber('report')
         ->name('reports.evidence');

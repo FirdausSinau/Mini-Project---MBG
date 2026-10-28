@@ -69,5 +69,9 @@
 
     <div class="page-actions">
         <a href="{{ route('reports.index') }}" class="btn btn--ghost">Kembali ke daftar</a>
+
+        @can('update', $report)
+            <a href="{{ route('reports.edit', $report) }}" class="btn btn--primary">Edit laporan</a>
+        @endcan
     </div>
 @endsection
