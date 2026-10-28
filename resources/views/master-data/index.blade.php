@@ -4,7 +4,6 @@
 
 @section('content')
     <section class="page-heading">
-        <p class="eyebrow">Data Induk</p>
         <h1>Kelola sekolah dan distribusi</h1>
         <p>Tambahkan data yang dibutuhkan untuk konteks laporan.</p>
     </section>

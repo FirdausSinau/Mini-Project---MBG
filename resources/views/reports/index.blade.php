@@ -4,7 +4,6 @@
 
 @section('content')
     <section class="page-heading">
-        <p class="eyebrow">Laporan</p>
         <h1>{{ auth()->user()->isStaff() ? 'Semua laporan' : 'Laporan saya' }}</h1>
         <p>
             {{ auth()->user()->isStaff()
@@ -52,8 +51,10 @@
                 @endforeach
             </select>
 
-            <button type="submit" class="btn btn--primary btn--sm">Terapkan</button>
-            <a href="{{ route('reports.index') }}" class="btn btn--ghost btn--sm">Reset</a>
+            <div class="filter-actions">
+                <button type="submit" class="btn btn--primary btn--sm">Terapkan</button>
+                <a href="{{ route('reports.index') }}" class="btn btn--ghost btn--sm">Reset</a>
+            </div>
         </form>
     </section>
 

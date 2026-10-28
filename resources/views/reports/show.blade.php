@@ -4,13 +4,13 @@
 
 @section('content')
     <section class="page-heading">
-        <p class="eyebrow">Laporan #{{ str_pad($report->id, 4, '0', STR_PAD_LEFT) }}</p>
         <h1>Detail laporan</h1>
-        <p>
+        <div class="page-heading__meta">
+            <span>Laporan #{{ str_pad($report->id, 4, '0', STR_PAD_LEFT) }}</span>
             <span class="status-badge {{ $report->status->badgeClass() }}">
                 {{ $report->status->label() }}
             </span>
-        </p>
+        </div>
     </section>
 
     <div class="detail-grid">
@@ -43,27 +43,55 @@
             </dl>
         </section>
 
-        <section class="card">
-            <h2>Deskripsi</h2>
-            <p class="report-description">{{ $report->description }}</p>
-        </section>
+        <div class="detail-stack">
+            <section class="card">
+                <h2>Deskripsi</h2>
+                <p class="report-description">{{ $report->description }}</p>
+            </section>
 
-        <section class="card">
-            <h2>Bukti pendukung</h2>
+            <section class="card">
+                <h2>Bukti pendukung</h2>
 
-            @if ($report->evidence_path)
-                <p>
-                    <a href="{{ route('reports.evidence', $report) }}" target="_blank" rel="noopener">
-                        {{ $report->evidence_original_name ?? 'Lihat bukti' }}
-                    </a>
-                </p>
-                <p class="form-help">
-                    File disimpan secara privat. Hanya pemilik dan petugas berwenang yang bisa membuka.
-                </p>
-            @else
-                <p>Belum ada bukti pendukung.</p>
-            @endif
-        </section>
+                @if ($report->evidence_path)
+                    <p>
+                        <a href="{{ route('reports.evidence', $report) }}" target="_blank" rel="noopener">
+                            {{ $report->evidence_original_name ?? 'Lihat bukti' }}
+                        </a>
+                    </p>
+                    <p class="form-help">
+                        File disimpan secara privat. Hanya pemilik dan petugas berwenang yang bisa membuka.
+                    </p>
+                @else
+                    <p>Belum ada bukti pendukung.</p>
+                @endif
+            </section>
+
+            @php
+                $isRepairNote = $report->review_note && (
+                    $report->status === \App\Enums\ReportStatus::PerluPerbaikan
+                    || ($report->status === \App\Enums\ReportStatus::Baru && $report->reviewed_at)
+                );
+            @endphp
+
+            <section class="card">
+                <h2>{{ $isRepairNote ? 'Catatan perbaikan terakhir' : 'Catatan peninjauan' }}</h2>
+
+                @if ($report->review_note)
+                    <p class="report-description">{{ $report->review_note }}</p>
+                    <p class="form-help">
+                        Ditinjau oleh {{ $report->reviewer?->nama_lengkap ?? 'Pemantau' }}
+                        pada {{ $report->reviewed_at?->format('d M Y H:i') }}
+                    </p>
+                    @if ($isRepairNote)
+                        <p class="form-help">
+                            Catatan ini menjadi alasan perbaikan terakhir. Catatan akan diperbarui saat peninjauan berikutnya.
+                        </p>
+                    @endif
+                @else
+                    <p>Belum ada catatan. Peninjauan akan dilakukan oleh Pemantau.</p>
+                @endif
+            </section>
+        </div>
 
         @if (auth()->user()->isStaff())
             <section class="card detail-grid__full">
@@ -94,34 +122,8 @@
             </section>
         @endif
 
-        @php
-            $isRepairNote = $report->review_note && (
-                $report->status === \App\Enums\ReportStatus::PerluPerbaikan
-                || ($report->status === \App\Enums\ReportStatus::Baru && $report->reviewed_at)
-            );
-        @endphp
-
-        <section class="card">
-            <h2>{{ $isRepairNote ? 'Catatan perbaikan terakhir' : 'Catatan peninjauan' }}</h2>
-
-            @if ($report->review_note)
-                <p class="report-description">{{ $report->review_note }}</p>
-                <p class="form-help">
-                    Ditinjau oleh {{ $report->reviewer?->nama_lengkap ?? 'Pemantau' }}
-                    pada {{ $report->reviewed_at?->format('d M Y H:i') }}
-                </p>
-                @if ($isRepairNote)
-                    <p class="form-help">
-                        Catatan ini menjadi alasan perbaikan terakhir. Catatan akan diperbarui saat peninjauan berikutnya.
-                    </p>
-                @endif
-            @else
-                <p>Belum ada catatan. Peninjauan akan dilakukan oleh Pemantau.</p>
-            @endif
-        </section>
-
         @if ($report->referred_at)
-            <section class="card">
+            <section class="card detail-grid__full">
                 <h2>Penerusan</h2>
                 <dl class="detail-list">
                     <div>
@@ -147,14 +149,14 @@
                 </dl>
             </section>
         @elseif ($report->status === \App\Enums\ReportStatus::PerluDiteruskan)
-            <section class="card">
+            <section class="card detail-grid__full">
                 <h2>Penerusan</h2>
                 <p>Laporan ditandai perlu diteruskan. Menunggu Koordinator mencatat penerusan.</p>
             </section>
         @endif
 
         @if ($report->closed_at)
-            <section class="card">
+            <section class="card detail-grid__full">
                 <h2>Penutupan</h2>
                 <dl class="detail-list">
                     <div>

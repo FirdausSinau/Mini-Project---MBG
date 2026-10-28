@@ -4,13 +4,13 @@
 
 @section('content')
     <section class="page-heading">
-        <p class="eyebrow">Laporan #{{ str_pad($report->id, 4, '0', STR_PAD_LEFT) }}</p>
         <h1>Edit laporan</h1>
-        <p>
+        <div class="page-heading__meta">
+            <span>Laporan #{{ str_pad($report->id, 4, '0', STR_PAD_LEFT) }}</span>
             <span class="status-badge {{ $report->status->badgeClass() }}">
                 {{ $report->status->label() }}
             </span>
-        </p>
+        </div>
     </section>
 
     <section class="card form-card">

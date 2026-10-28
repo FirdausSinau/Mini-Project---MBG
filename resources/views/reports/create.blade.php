@@ -4,7 +4,6 @@
 
 @section('content')
     <section class="page-heading">
-        <p class="eyebrow">Laporan</p>
         <h1>Buat laporan kejadian</h1>
         <p>Pilih distribusi yang berkaitan, lalu jelaskan kejadian yang kamu ketahui.</p>
     </section>

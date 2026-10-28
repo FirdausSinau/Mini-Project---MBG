@@ -4,9 +4,14 @@
 
 @section('content')
     <section class="page-heading">
-        <p class="eyebrow">Rekap</p>
         <h1>Rekap laporan</h1>
-        <p>Gambaran kondisi laporan berdasarkan sekolah dan rentang tanggal kejadian.</p>
+        <p class="page-finding">
+            @if ($needReferral > 0)
+                {{ $needReferral }} laporan menunggu penerusan.
+            @else
+                Tidak ada laporan yang menunggu penerusan.
+            @endif
+        </p>
     </section>
 
     <section class="card filter-card">
@@ -15,23 +20,32 @@
         @endif
 
         <form method="GET" action="{{ route('recap.index') }}" class="filter-bar">
-            <select name="school_id" aria-label="Sekolah">
-                <option value="">Semua sekolah</option>
-                @foreach ($schoolOptions as $school)
-                    <option value="{{ $school->id }}" @selected(request('school_id') == $school->id)>
-                        {{ $school->nama }}
-                    </option>
-                @endforeach
-            </select>
+            <div class="filter-field filter-field--wide">
+                <label for="school_id">Sekolah</label>
+                <select id="school_id" name="school_id">
+                    <option value="">Semua sekolah</option>
+                    @foreach ($schoolOptions as $school)
+                        <option value="{{ $school->id }}" @selected(request('school_id') == $school->id)>
+                            {{ $school->nama }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-            <label for="from" class="filter-label">Dari</label>
-            <input id="from" type="date" name="from" value="{{ request('from') }}">
+            <div class="filter-field">
+                <label for="from">Dari</label>
+                <input id="from" type="date" name="from" value="{{ request('from') }}">
+            </div>
 
-            <label for="to" class="filter-label">Sampai</label>
-            <input id="to" type="date" name="to" value="{{ request('to') }}">
+            <div class="filter-field">
+                <label for="to">Sampai</label>
+                <input id="to" type="date" name="to" value="{{ request('to') }}">
+            </div>
 
-            <button type="submit" class="btn btn--primary btn--sm">Terapkan</button>
-            <a href="{{ route('recap.index') }}" class="btn btn--ghost btn--sm">Reset</a>
+            <div class="filter-actions">
+                <button type="submit" class="btn btn--primary btn--sm">Terapkan</button>
+                <a href="{{ route('recap.index') }}" class="btn btn--ghost btn--sm">Reset</a>
+            </div>
         </form>
     </section>
 
@@ -67,22 +81,22 @@
             <thead>
                 <tr>
                     <th>Sekolah</th>
-                    <th>Total</th>
-                    <th>Diproses</th>
-                    <th>Diteruskan</th>
-                    <th>Selesai</th>
-                    <th>Laporan terakhir</th>
+                    <th class="num">Total</th>
+                    <th class="num">Diproses</th>
+                    <th class="num">Diteruskan</th>
+                    <th class="num">Selesai</th>
+                    <th class="num">Laporan terakhir</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($schools as $school)
                     <tr>
                         <td>{{ $school->nama }}</td>
-                        <td>{{ $school->total_reports }}</td>
-                        <td>{{ $school->in_process_reports }}</td>
-                        <td>{{ $school->referred_reports }}</td>
-                        <td>{{ $school->finished_reports }}</td>
-                        <td>
+                        <td class="num">{{ $school->total_reports }}</td>
+                        <td class="num">{{ $school->in_process_reports }}</td>
+                        <td class="num">{{ $school->referred_reports }}</td>
+                        <td class="num">{{ $school->finished_reports }}</td>
+                        <td class="num">
                             {{ $school->last_incident_at
                                 ? \Illuminate\Support\Carbon::parse($school->last_incident_at)->format('d M Y')
                                 : '-' }}

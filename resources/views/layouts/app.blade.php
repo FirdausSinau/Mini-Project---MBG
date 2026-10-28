@@ -21,37 +21,40 @@
 
         <nav class="app-nav" aria-label="Navigasi utama">
             <a href="{{ route('dashboard') }}"
-               class="app-nav__link {{ request()->routeIs('dashboard') ? 'is-active' : '' }}">
+               class="app-nav__link {{ request()->routeIs('dashboard') ? 'is-active' : '' }}"
+               @if (request()->routeIs('dashboard')) aria-current="page" @endif>
                 Dashboard
             </a>
 
             @if (auth()->user()->isReporter())
                 <a href="{{ route('reports.create') }}"
-                   class="app-nav__link {{ request()->routeIs('reports.create') ? 'is-active' : '' }}">
+                   class="app-nav__link {{ request()->routeIs('reports.create') ? 'is-active' : '' }}"
+                   @if (request()->routeIs('reports.create')) aria-current="page" @endif>
                     Buat Laporan
                 </a>
             @endif
 
             <a href="{{ route('reports.index') }}"
-               class="app-nav__link {{ request()->routeIs(['reports.index', 'reports.show']) ? 'is-active' : '' }}">
+               class="app-nav__link {{ request()->routeIs(['reports.index', 'reports.show']) ? 'is-active' : '' }}"
+               @if (request()->routeIs(['reports.index', 'reports.show'])) aria-current="page" @endif>
                 {{ auth()->user()->isStaff() ? 'Semua Laporan' : 'Laporan Saya' }}
             </a>
 
             @if (auth()->user()->isStaff())
                 <a href="{{ route('recap.index') }}"
-                   class="app-nav__link {{ request()->routeIs('recap.*') ? 'is-active' : '' }}">
+                   class="app-nav__link {{ request()->routeIs('recap.*') ? 'is-active' : '' }}"
+                   @if (request()->routeIs('recap.*')) aria-current="page" @endif>
                     Rekap
                 </a>
             @endif
 
             @if (auth()->user()->isCoordinator())
                 <a href="{{ route('master-data.index') }}"
-                   class="app-nav__link {{ request()->routeIs('master-data.*') ? 'is-active' : '' }}">
+                   class="app-nav__link {{ request()->routeIs('master-data.*') ? 'is-active' : '' }}"
+                   @if (request()->routeIs('master-data.*')) aria-current="page" @endif>
                     Data Induk
                 </a>
             @endif
-
-            {{-- Link laporan dan rekap ditambahkan saat halamannya sudah ada. --}}
 
             <form method="POST" action="{{ route('logout') }}" class="app-nav__logout">
                 @csrf
@@ -62,11 +65,11 @@
 
     <main id="main" class="app-main">
         @if (session('success'))
-            <div class="alert alert--success">{{ session('success') }}</div>
+            <div class="alert alert--success" role="status">{{ session('success') }}</div>
         @endif
 
         @if (session('error'))
-            <div class="alert alert--danger">{{ session('error') }}</div>
+            <div class="alert alert--danger" role="alert">{{ session('error') }}</div>
         @endif
 
         @yield('content')

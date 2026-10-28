@@ -4,7 +4,6 @@
 
 @section('content')
     <section class="page-heading">
-        <p class="eyebrow">Data Induk</p>
         <h1>Edit sekolah</h1>
         <p>Perbarui data sekolah.</p>
     </section>
