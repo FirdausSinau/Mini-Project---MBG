@@ -10,7 +10,7 @@ class ReportPolicy
 {
     public function view(User $user, Report $report): bool
     {
-        return $user->id === $report->user_id;
+        return $user->id === $report->user_id || $user->isStaff();
     }
 
     public function update(User $user, Report $report): bool

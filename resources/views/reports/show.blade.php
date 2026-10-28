@@ -22,6 +22,10 @@
                     <dd>{{ $report->distribution->school->nama }}</dd>
                 </div>
                 <div>
+                    <dt>Pelapor</dt>
+                    <dd>{{ $report->reporter->nama_lengkap }}</dd>
+                </div>
+                <div>
                     <dt>Distribusi</dt>
                     <dd>
                         {{ $report->distribution->tanggal->format('d M Y') }}
@@ -60,6 +64,35 @@
                 <p>Belum ada bukti pendukung.</p>
             @endif
         </section>
+
+        @if (auth()->user()->isStaff())
+            <section class="card detail-grid__full">
+                <h2>Laporan lain pada distribusi ini</h2>
+
+                @if ($relatedReports->isEmpty())
+                    <p>Tidak ada laporan lain pada distribusi ini.</p>
+                @else
+                    <ul class="related-list">
+                        @foreach ($relatedReports as $related)
+                            <li>
+                                <a href="{{ route('reports.show', $related) }}">
+                                    #{{ str_pad($related->id, 4, '0', STR_PAD_LEFT) }}
+                                </a>
+                                <span class="status-badge {{ $related->status->badgeClass() }}">
+                                    {{ $related->status->label() }}
+                                </span>
+                                <span class="form-help">
+                                    {{ $related->incident_at->format('d M Y H:i') }}
+                                </span>
+                                <span class="form-help">
+                                    {{ $related->reporter->nama_lengkap }}
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </section>
+        @endif
 
         <section class="card">
             <h2>Catatan peninjauan</h2>

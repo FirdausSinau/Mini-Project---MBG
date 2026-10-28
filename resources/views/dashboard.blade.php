@@ -31,7 +31,10 @@
                 <span class="badge">Mulai</span>
                 <h2>Buat laporan</h2>
                 <p>Laporkan kejadian dengan konteks sekolah dan distribusi.</p>
-                <a href="{{ route('reports.create') }}" class="btn btn--primary">Buat laporan</a>
+                <div class="card-actions">
+                    <a href="{{ route('reports.create') }}" class="btn btn--primary">Buat laporan</a>
+                    <a href="{{ route('reports.index') }}" class="btn btn--ghost">Laporan saya</a>
+                </div>
             </div>
         </section>
     @elseif (auth()->user()->isReviewer())
@@ -53,9 +56,10 @@
             </div>
 
             <div class="card">
-                <span class="badge">Berikutnya</span>
-                <h2>Daftar laporan segera hadir</h2>
-                <p>Daftar laporan, filter, dan form peninjauan akan ditambahkan pada langkah berikutnya.</p>
+                <span class="badge">Mulai</span>
+                <h2>Tinjau laporan</h2>
+                <p>Lihat laporan yang masuk dan periksa kelengkapannya.</p>
+                <a href="{{ route('reports.index') }}" class="btn btn--primary">Lihat laporan</a>
             </div>
         </section>
     @elseif (auth()->user()->isCoordinator())
@@ -77,9 +81,13 @@
             </div>
 
             <div class="card">
-                <span class="badge">Berikutnya</span>
-                <h2>Rekap dan data induk segera hadir</h2>
-                <p>Halaman rekap, data sekolah, dan data distribusi akan ditambahkan pada langkah berikutnya.</p>
+                <span class="badge">Mulai</span>
+                <h2>Pantau laporan dan data</h2>
+                <p>Lihat laporan yang masuk, lalu kelola data sekolah dan distribusi.</p>
+                <div class="card-actions">
+                    <a href="{{ route('reports.index') }}" class="btn btn--primary">Lihat laporan</a>
+                    <a href="{{ route('master-data.index') }}" class="btn btn--ghost">Data Induk</a>
+                </div>
             </div>
         </section>
     @endif

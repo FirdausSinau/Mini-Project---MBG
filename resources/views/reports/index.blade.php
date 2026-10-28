@@ -1,17 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan Saya')
+@section('title', auth()->user()->isStaff() ? 'Semua Laporan' : 'Laporan Saya')
 
 @section('content')
     <section class="page-heading">
         <p class="eyebrow">Laporan</p>
-        <h1>Laporan saya</h1>
-        <p>Semua laporan yang kamu kirim.</p>
+        <h1>{{ auth()->user()->isStaff() ? 'Semua laporan' : 'Laporan saya' }}</h1>
+        <p>
+            {{ auth()->user()->isStaff()
+                ? 'Laporan yang masuk dari seluruh pelapor.'
+                : 'Semua laporan yang kamu kirim.' }}
+        </p>
     </section>
 
-    <div class="page-actions page-actions--top">
-        <a href="{{ route('reports.create') }}" class="btn btn--primary">Buat laporan</a>
-    </div>
+    @if (auth()->user()->isReporter())
+        <div class="page-actions page-actions--top">
+            <a href="{{ route('reports.create') }}" class="btn btn--primary">Buat laporan</a>
+        </div>
+    @endif
 
     <div class="table-wrap">
         <table class="data-table">
@@ -21,6 +27,7 @@
                     <th>Sekolah</th>
                     <th>Distribusi</th>
                     <th>Kejadian</th>
+                    <th>Pelapor</th>
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
@@ -32,6 +39,7 @@
                         <td>{{ $report->distribution->school->nama }}</td>
                         <td>{{ $report->distribution->tanggal->format('d M Y') }}</td>
                         <td>{{ $report->incident_at->format('d M Y H:i') }}</td>
+                        <td>{{ $report->reporter->nama_lengkap }}</td>
                         <td>
                             <span class="status-badge {{ $report->status->badgeClass() }}">
                                 {{ $report->status->label() }}
@@ -45,9 +53,11 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="empty-state">
+                        <td colspan="7" class="empty-state">
                             Belum ada laporan.
-                            <a href="{{ route('reports.create') }}">Buat laporan pertama</a>.
+                            @if (auth()->user()->isReporter())
+                                <a href="{{ route('reports.create') }}">Buat laporan pertama</a>.
+                            @endif
                         </td>
                     </tr>
                 @endforelse

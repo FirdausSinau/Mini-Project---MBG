@@ -763,6 +763,31 @@ summary:focus-visible {
     margin: .15rem 0 0;
 }
 
+.detail-grid__full {
+    grid-column: 1 / -1;
+}
+
+.related-list {
+    display: grid;
+    gap: .6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.related-list li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
 .report-description {
     white-space: pre-line;
 }

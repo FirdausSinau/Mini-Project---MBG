@@ -32,12 +32,10 @@
                 </a>
             @endif
 
-            @if (auth()->user()->isReporter())
-                <a href="{{ route('reports.index') }}"
-                   class="app-nav__link {{ request()->routeIs(['reports.index', 'reports.show']) ? 'is-active' : '' }}">
-                    Laporan Saya
-                </a>
-            @endif
+            <a href="{{ route('reports.index') }}"
+               class="app-nav__link {{ request()->routeIs(['reports.index', 'reports.show']) ? 'is-active' : '' }}">
+                {{ auth()->user()->isStaff() ? 'Semua Laporan' : 'Laporan Saya' }}
+            </a>
 
             @if (auth()->user()->isCoordinator())
                 <a href="{{ route('master-data.index') }}"

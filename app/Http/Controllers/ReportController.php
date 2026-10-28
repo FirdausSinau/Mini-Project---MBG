@@ -17,10 +17,10 @@ class ReportController extends Controller
 {
     public function index(Request $request): View
     {
-        abort_unless($request->user()->isReporter(), 403);
+        $user = $request->user();
 
-        $reports = Report::with('distribution.school')
-            ->where('user_id', $request->user()->id)
+        $reports = Report::with(['distribution.school', 'reporter'])
+            ->when($user->isReporter(), fn ($query) => $query->where('user_id', $user->id))
             ->latest('incident_at')
             ->get();
 
@@ -101,8 +101,18 @@ class ReportController extends Controller
     {
         Gate::authorize('view', $report);
 
-        $report->load('distribution.school');
+        $report->load('distribution.school', 'reporter');
 
-        return view('reports.show', compact('report'));
+        $relatedReports = collect();
+
+        if (auth()->user()->isStaff()) {
+            $relatedReports = Report::with('reporter')
+                ->where('distribution_id', $report->distribution_id)
+                ->where('id', '!=', $report->id)
+                ->latest('incident_at')
+                ->get();
+        }
+
+        return view('reports.show', compact('report', 'relatedReports'));
     }
 }
