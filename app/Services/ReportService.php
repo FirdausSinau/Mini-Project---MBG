@@ -57,6 +57,18 @@ class ReportService
         return $report;
     }
 
+    public function close(Report $report, ?string $note, User $coordinator): Report
+    {
+        $this->transitionTo($report, ReportStatus::Selesai, 'ditutup');
+
+        $report->closure_note = $note;
+        $report->closed_by = $coordinator->id;
+        $report->closed_at = now();
+        $report->save();
+
+        return $report;
+    }
+
     private function transitionTo(
         Report $report,
         ReportStatus $nextStatus,
@@ -82,6 +94,8 @@ class ReportService
             ], true),
             ReportStatus::PerluPerbaikan => $to === ReportStatus::Baru,
             ReportStatus::PerluDiteruskan => $to === ReportStatus::Diteruskan,
+            ReportStatus::Ditinjau => $to === ReportStatus::Selesai,
+            ReportStatus::Diteruskan => $to === ReportStatus::Selesai,
             default => false,
         };
     }

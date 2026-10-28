@@ -153,6 +153,27 @@
             </section>
         @endif
 
+        @if ($report->closed_at)
+            <section class="card">
+                <h2>Penutupan</h2>
+                <dl class="detail-list">
+                    <div>
+                        <dt>Catatan penutupan</dt>
+                        <dd class="report-description">
+                            {{ $report->closure_note ?? 'Tidak ada catatan.' }}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Ditutup oleh</dt>
+                        <dd>
+                            {{ $report->closer?->nama_lengkap ?? 'Koordinator' }}
+                            pada {{ $report->closed_at->format('d M Y H:i') }}
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+        @endif
+
         @can('refer', $report)
             @if ($report->status === \App\Enums\ReportStatus::PerluDiteruskan)
                 <section class="card detail-grid__full">
@@ -217,6 +238,43 @@
 
                         <div class="form-actions form-field--full">
                             <button type="submit" class="btn btn--primary">Simpan penerusan</button>
+                        </div>
+                    </form>
+                </section>
+            @endif
+        @endcan
+
+        @can('close', $report)
+            @if (in_array($report->status, [
+                \App\Enums\ReportStatus::Ditinjau,
+                \App\Enums\ReportStatus::Diteruskan,
+            ], true))
+                <section class="card detail-grid__full">
+                    <h2>Form penutupan</h2>
+
+                    <form method="POST"
+                          action="{{ route('reports.close', $report) }}"
+                          class="form">
+                        @csrf
+
+                        <div class="form-field">
+                            <label for="closure_note">
+                                Catatan penutupan <span class="optional">(opsional)</span>
+                            </label>
+                            <textarea
+                                id="closure_note"
+                                name="closure_note"
+                                rows="4"
+                                maxlength="1000"
+                                @error('closure_note') aria-invalid="true" aria-describedby="closure_note-error" @enderror
+                            >{{ old('closure_note') }}</textarea>
+                            @error('closure_note')
+                                <p id="closure_note-error" class="form-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn--primary">Tutup laporan</button>
                         </div>
                     </form>
                 </section>

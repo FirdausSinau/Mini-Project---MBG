@@ -38,4 +38,13 @@ class ReportPolicy
         return $user->isCoordinator()
             && $report->status === ReportStatus::PerluDiteruskan;
     }
+
+    public function close(User $user, Report $report): bool
+    {
+        return $user->isCoordinator()
+            && in_array($report->status, [
+                ReportStatus::Ditinjau,
+                ReportStatus::Diteruskan,
+            ], true);
+    }
 }

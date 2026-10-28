@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ReferralParty;
 use App\Enums\ReportStatus;
 use App\Enums\ReviewDecision;
+use App\Http\Requests\CloseReportRequest;
 use App\Http\Requests\ReferReportRequest;
 use App\Http\Requests\ReportFilterRequest;
 use App\Http\Requests\ReviewReportRequest;
@@ -131,7 +132,7 @@ class ReportController extends Controller
     {
         Gate::authorize('view', $report);
 
-        $report->load('distribution.school', 'reporter', 'reviewer', 'referrer');
+        $report->load('distribution.school', 'reporter', 'reviewer', 'referrer', 'closer');
 
         $relatedReports = collect();
 
@@ -215,5 +216,29 @@ class ReportController extends Controller
         return redirect()
             ->route('reports.show', $report)
             ->with('success', 'Penerusan berhasil dicatat.');
+    }
+
+    public function close(
+        CloseReportRequest $request,
+        Report $report,
+        ReportService $service
+    ): RedirectResponse {
+        $data = $request->validated();
+
+        try {
+            $service->close(
+                $report,
+                $data['closure_note'] ?? null,
+                $request->user(),
+            );
+        } catch (DomainException $exception) {
+            return redirect()
+                ->route('reports.show', $report)
+                ->with('error', $exception->getMessage());
+        }
+
+        return redirect()
+            ->route('reports.show', $report)
+            ->with('success', 'Laporan berhasil ditutup.');
     }
 }
