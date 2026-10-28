@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Report;
 use App\Models\User;
+use App\Policies\ReportPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,5 +30,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('create-report', function (User $user): bool {
             return $user->isReporter();
         });
+
+        Gate::policy(Report::class, ReportPolicy::class);
     }
 }

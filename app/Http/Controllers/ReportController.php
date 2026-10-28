@@ -9,6 +9,7 @@ use App\Models\School;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ReportController extends Controller
 {
@@ -47,10 +48,9 @@ class ReportController extends Controller
             ->with('success', 'Laporan berhasil dikirim.');
     }
 
-    public function show(Request $request, Report $report): View
+    public function show(Report $report): View
     {
-        abort_unless($request->user()->isReporter(), 403);
-        abort_unless($report->user_id === $request->user()->id, 403);
+        Gate::authorize('view', $report);
 
         $report->load('distribution.school');
 
