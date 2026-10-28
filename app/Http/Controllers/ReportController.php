@@ -3,28 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ReportStatus;
+use App\Http\Requests\ReportFilterRequest;
 use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
 use App\Models\Report;
 use App\Models\School;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
-    public function index(Request $request): View
+    public function index(ReportFilterRequest $request): View
     {
         $user = $request->user();
 
+        $filters = $request->validated();
+
         $reports = Report::with(['distribution.school', 'reporter'])
             ->when($user->isReporter(), fn ($query) => $query->where('user_id', $user->id))
+            ->when($filters['status'] ?? null, fn ($query, $status) => $query->where('status', $status))
+            ->when($filters['school_id'] ?? null, fn ($query, $schoolId) => $query->whereHas(
+                'distribution',
+                fn ($query) => $query->where('school_id', $schoolId)
+            ))
+            ->when($filters['q'] ?? null, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('description', 'like', "%{$search}%")
+                        ->orWhereHas(
+                            'distribution.school',
+                            fn ($query) => $query->where('nama', 'like', "%{$search}%")
+                        )
+                        ->orWhereHas(
+                            'reporter',
+                            fn ($query) => $query->where('nama_lengkap', 'like', "%{$search}%")
+                        );
+                });
+            })
             ->latest('incident_at')
-            ->get();
+            ->simplePaginate(10)
+            ->withQueryString();
 
-        return view('reports.index', compact('reports'));
+        $schools = School::orderBy('nama')->get();
+        $statuses = ReportStatus::cases();
+
+        return view('reports.index', compact('reports', 'schools', 'statuses'));
     }
 
     public function create(): View

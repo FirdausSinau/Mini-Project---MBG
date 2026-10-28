@@ -804,6 +804,61 @@ summary:focus-visible {
     margin-bottom: 1rem;
 }
 
+.filter-card {
+    margin-bottom: 1rem;
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.filter-bar input,
+.filter-bar select {
+    padding: .6rem .75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    font: inherit;
+}
+
+.filter-bar input[type="search"] {
+    flex: 1 1 18rem;
+}
+
+.filter-bar select {
+    flex: 0 1 12rem;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin-top: 1rem;
+}
+
+.pagination__link {
+    padding: .45rem .75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.pagination__link.is-disabled {
+    background: #f9fafb;
+    color: var(--color-muted);
+}
+
+.pagination__info {
+    color: var(--color-muted);
+    font-size: .85rem;
+}
+
 .landing-page {
     min-height: 100vh;
     display: grid;
