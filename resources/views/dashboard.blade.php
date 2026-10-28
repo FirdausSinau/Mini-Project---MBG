@@ -59,7 +59,10 @@
                 <span class="badge">Mulai</span>
                 <h2>Tinjau laporan</h2>
                 <p>Lihat laporan yang masuk dan periksa kelengkapannya.</p>
-                <a href="{{ route('reports.index') }}" class="btn btn--primary">Lihat laporan</a>
+                <div class="card-actions">
+                    <a href="{{ route('reports.index') }}" class="btn btn--primary">Lihat laporan</a>
+                    <a href="{{ route('recap.index') }}" class="btn btn--ghost">Rekap</a>
+                </div>
             </div>
         </section>
     @elseif (auth()->user()->isCoordinator())
@@ -86,6 +89,7 @@
                 <p>Lihat laporan yang masuk, lalu kelola data sekolah dan distribusi.</p>
                 <div class="card-actions">
                     <a href="{{ route('reports.index') }}" class="btn btn--primary">Lihat laporan</a>
+                    <a href="{{ route('recap.index') }}" class="btn btn--ghost">Rekap</a>
                     <a href="{{ route('master-data.index') }}" class="btn btn--ghost">Data Induk</a>
                 </div>
             </div>

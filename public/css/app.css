@@ -877,6 +877,53 @@ summary:focus-visible {
     flex: 0 1 12rem;
 }
 
+.filter-bar input[type="date"] {
+    flex: 0 1 10rem;
+}
+
+.filter-label {
+    align-self: center;
+    color: var(--color-muted);
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.recap-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card {
+    padding: 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-card__label {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.stat-card__value {
+    margin: .25rem 0 0;
+    color: var(--color-ink);
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.recap-note {
+    margin-top: .75rem;
+}
+
 .pagination {
     display: flex;
     align-items: center;

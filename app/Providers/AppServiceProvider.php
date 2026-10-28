@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
             return $user->isReporter();
         });
 
+        Gate::define('view-recap', function (User $user): bool {
+            return $user->isReviewer() || $user->isCoordinator();
+        });
+
         Gate::policy(Report::class, ReportPolicy::class);
 
         Report::observe(ReportObserver::class);

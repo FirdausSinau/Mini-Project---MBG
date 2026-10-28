@@ -37,6 +37,13 @@
                 {{ auth()->user()->isStaff() ? 'Semua Laporan' : 'Laporan Saya' }}
             </a>
 
+            @if (auth()->user()->isStaff())
+                <a href="{{ route('recap.index') }}"
+                   class="app-nav__link {{ request()->routeIs('recap.*') ? 'is-active' : '' }}">
+                    Rekap
+                </a>
+            @endif
+
             @if (auth()->user()->isCoordinator())
                 <a href="{{ route('master-data.index') }}"
                    class="app-nav__link {{ request()->routeIs('master-data.*') ? 'is-active' : '' }}">

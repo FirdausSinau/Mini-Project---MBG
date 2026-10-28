@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistributionLookupController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\RecapController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportEvidenceController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,10 @@ Route::middleware(['auth', 'can:manage-master-data'])->group(function () {
     Route::get('/distributions/{distribution}/edit', [MasterDataController::class, 'editDistribution'])->name('distributions.edit');
     Route::patch('/distributions/{distribution}', [MasterDataController::class, 'updateDistribution'])->name('distributions.update');
     Route::delete('/distributions/{distribution}', [MasterDataController::class, 'destroyDistribution'])->name('distributions.destroy');
+});
+
+Route::middleware(['auth', 'can:view-recap'])->group(function () {
+    Route::get('/recap', [RecapController::class, 'index'])->name('recap.index');
 });
 
 Route::middleware(['auth', 'can:create-report'])->group(function () {
