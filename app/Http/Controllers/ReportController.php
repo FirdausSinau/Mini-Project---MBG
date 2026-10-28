@@ -27,11 +27,7 @@ class ReportController extends Controller
 
     public function create(): View
     {
-        $schools = School::with([
-            'distributions' => fn ($query) => $query->orderByDesc('tanggal'),
-        ])
-            ->orderBy('nama')
-            ->get();
+        $schools = School::orderBy('nama')->get();
 
         return view('reports.create', compact('schools'));
     }
@@ -39,7 +35,7 @@ class ReportController extends Controller
     public function store(StoreReportRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        unset($data['evidence']);
+        unset($data['evidence'], $data['school_id']);
 
         if ($request->hasFile('evidence')) {
             $data['evidence_path'] = $request->file('evidence')

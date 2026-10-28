@@ -70,5 +70,7 @@
     <footer class="app-footer">
         <p>Lapor MBG · Mini Project Proyek 3</p>
     </footer>
+
+    @stack('scripts')
 </body>
 </html>

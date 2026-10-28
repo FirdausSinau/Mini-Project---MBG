@@ -637,6 +637,12 @@ summary:focus-visible {
     border-color: var(--color-danger);
 }
 
+.form-field select:disabled {
+    background: #f3f4f6;
+    color: var(--color-muted);
+    cursor: not-allowed;
+}
+
 .table-wrap {
     overflow-x: auto;
     border: 1px solid var(--color-border);

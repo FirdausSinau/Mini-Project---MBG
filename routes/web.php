@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DistributionLookupController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportEvidenceController;
@@ -41,6 +42,9 @@ Route::middleware(['auth', 'can:create-report'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/schools/{school}/distributions', [DistributionLookupController::class, 'index'])
+        ->name('schools.distributions.index');
+
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{report}', [ReportController::class, 'show'])
         ->whereNumber('report')

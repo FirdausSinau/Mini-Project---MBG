@@ -10,35 +10,46 @@
     </section>
 
     <section class="card form-card">
-        <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="form form--grid">
+        <form method="POST" action="{{ route('reports.store') }}"
+              enctype="multipart/form-data"
+              class="form form--grid"
+              data-report-form
+              data-distributions-url-template="{{ route('schools.distributions.index', ['school' => '__SCHOOL__']) }}"
+              data-selected-distribution="{{ old('distribution_id') }}">
             @csrf
 
-            <div class="form-field form-field--full">
+            <div class="form-field">
+                <label for="school_id">Sekolah</label>
+                <select
+                    id="school_id"
+                    name="school_id"
+                    required
+                    @error('school_id') aria-invalid="true" aria-describedby="school_id-error" @enderror
+                >
+                    <option value="">Pilih sekolah</option>
+                    @foreach ($schools as $school)
+                        <option value="{{ $school->id }}" @selected(old('school_id') == $school->id)>
+                            {{ $school->nama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('school_id')
+                    <p id="school_id-error" class="form-error">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="form-field">
                 <label for="distribution_id">Distribusi</label>
                 <select
                     id="distribution_id"
                     name="distribution_id"
                     required
+                    disabled
                     @error('distribution_id') aria-invalid="true" aria-describedby="distribution_id-error" @enderror
                 >
-                    <option value="">Pilih distribusi</option>
-
-                    @foreach ($schools as $school)
-                        @if ($school->distributions->isNotEmpty())
-                            <optgroup label="{{ $school->nama }}">
-                                @foreach ($school->distributions as $distribution)
-                                    <option
-                                        value="{{ $distribution->id }}"
-                                        @selected(old('distribution_id') == $distribution->id)
-                                    >
-                                        {{ $distribution->tanggal->format('d M Y') }}
-                                        - {{ $distribution->menu ?? 'Menu belum dicatat' }}
-                                    </option>
-                                @endforeach
-                            </optgroup>
-                        @endif
-                    @endforeach
+                    <option value="">Pilih sekolah dulu</option>
                 </select>
+                <p id="distribution-status" class="form-help" aria-live="polite"></p>
                 @error('distribution_id')
                     <p id="distribution_id-error" class="form-error">{{ $message }}</p>
                 @enderror
@@ -115,3 +126,7 @@
         </form>
     </section>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/report-form.js') }}" defer></script>
+@endpush

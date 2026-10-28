@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Distribution;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Validator;
 
@@ -22,7 +23,12 @@ class StoreReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'distribution_id' => ['required', 'exists:distributions,id'],
+            'school_id' => ['required', 'exists:schools,id'],
+            'distribution_id' => [
+                'required',
+                Rule::exists('distributions', 'id')
+                    ->where(fn ($query) => $query->where('school_id', $this->input('school_id'))),
+            ],
             'incident_at' => ['required', 'date', 'before_or_equal:now'],
             'description' => ['required', 'string', 'min:20', 'max:2000'],
             'location_detail' => ['nullable', 'string', 'max:150'],
