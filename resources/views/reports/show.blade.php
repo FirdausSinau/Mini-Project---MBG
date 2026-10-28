@@ -94,8 +94,15 @@
             </section>
         @endif
 
+        @php
+            $isRepairNote = $report->review_note && (
+                $report->status === \App\Enums\ReportStatus::PerluPerbaikan
+                || ($report->status === \App\Enums\ReportStatus::Baru && $report->reviewed_at)
+            );
+        @endphp
+
         <section class="card">
-            <h2>Catatan peninjauan</h2>
+            <h2>{{ $isRepairNote ? 'Catatan perbaikan terakhir' : 'Catatan peninjauan' }}</h2>
 
             @if ($report->review_note)
                 <p class="report-description">{{ $report->review_note }}</p>
@@ -103,6 +110,11 @@
                     Ditinjau oleh {{ $report->reviewer?->nama_lengkap ?? 'Pemantau' }}
                     pada {{ $report->reviewed_at?->format('d M Y H:i') }}
                 </p>
+                @if ($isRepairNote)
+                    <p class="form-help">
+                        Catatan ini menjadi alasan perbaikan terakhir. Catatan akan diperbarui saat peninjauan berikutnya.
+                    </p>
+                @endif
             @else
                 <p>Belum ada catatan. Peninjauan akan dilakukan oleh Pemantau.</p>
             @endif
@@ -170,6 +182,13 @@
 
         @can('update', $report)
             <a href="{{ route('reports.edit', $report) }}" class="btn btn--primary">Edit laporan</a>
+        @endcan
+
+        @can('resubmit', $report)
+            <form method="POST" action="{{ route('reports.resubmit', $report) }}">
+                @csrf
+                <button type="submit" class="btn btn--primary">Kirim ulang laporan</button>
+            </form>
         @endcan
     </div>
 @endsection

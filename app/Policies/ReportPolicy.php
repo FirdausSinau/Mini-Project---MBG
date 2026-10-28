@@ -26,4 +26,10 @@ class ReportPolicy
     {
         return $user->isReviewer();
     }
+
+    public function resubmit(User $user, Report $report): bool
+    {
+        return $user->id === $report->user_id
+            && $report->status === ReportStatus::PerluPerbaikan;
+    }
 }

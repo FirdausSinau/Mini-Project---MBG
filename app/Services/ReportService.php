@@ -18,20 +18,38 @@ class ReportService
     ): Report {
         $nextStatus = $decision->status();
 
-        if (! $this->canTransition($report->status, $nextStatus)) {
-            throw new DomainException(
-                'Laporan ini tidak bisa ditinjau lagi. Status saat ini: '
-                . $report->status->label() . '.'
-            );
-        }
+        $this->transitionTo($report, $nextStatus, 'ditinjau lagi');
 
-        $report->status = $nextStatus;
         $report->review_note = $note;
         $report->reviewed_by = $reviewer->id;
         $report->reviewed_at = now();
         $report->save();
 
         return $report;
+    }
+
+    public function resubmit(Report $report): Report
+    {
+        $this->transitionTo($report, ReportStatus::Baru, 'dikirim ulang');
+
+        $report->save();
+
+        return $report;
+    }
+
+    private function transitionTo(
+        Report $report,
+        ReportStatus $nextStatus,
+        string $action
+    ): void {
+        if (! $this->canTransition($report->status, $nextStatus)) {
+            throw new DomainException(
+                'Laporan ini tidak bisa ' . $action . '. Status saat ini: '
+                . $report->status->label() . '.'
+            );
+        }
+
+        $report->status = $nextStatus;
     }
 
     private function canTransition(ReportStatus $from, ReportStatus $to): bool
@@ -42,6 +60,7 @@ class ReportService
                 ReportStatus::PerluDiteruskan,
                 ReportStatus::PerluPerbaikan,
             ], true),
+            ReportStatus::PerluPerbaikan => $to === ReportStatus::Baru,
             default => false,
         };
     }

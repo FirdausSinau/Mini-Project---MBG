@@ -170,4 +170,21 @@ class ReportController extends Controller
             ->route('reports.show', $report)
             ->with('success', 'Peninjauan berhasil disimpan.');
     }
+
+    public function resubmit(Report $report, ReportService $service): RedirectResponse
+    {
+        Gate::authorize('resubmit', $report);
+
+        try {
+            $service->resubmit($report);
+        } catch (DomainException $exception) {
+            return redirect()
+                ->route('reports.show', $report)
+                ->with('error', $exception->getMessage());
+        }
+
+        return redirect()
+            ->route('reports.show', $report)
+            ->with('success', 'Laporan berhasil dikirim ulang.');
+    }
 }
