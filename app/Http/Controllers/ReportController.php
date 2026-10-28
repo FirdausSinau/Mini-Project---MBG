@@ -132,7 +132,14 @@ class ReportController extends Controller
     {
         Gate::authorize('view', $report);
 
-        $report->load('distribution.school', 'reporter', 'reviewer', 'referrer', 'closer');
+        $report->load(
+            'distribution.school',
+            'reporter',
+            'reviewer',
+            'referrer',
+            'closer',
+            'statusLogs.actor',
+        );
 
         $relatedReports = collect();
 

@@ -81,6 +81,6 @@ class Report extends Model
 
     public function statusLogs(): HasMany
     {
-        return $this->hasMany(ReportStatusLog::class);
+        return $this->hasMany(ReportStatusLog::class)->oldest('id');
     }
 }

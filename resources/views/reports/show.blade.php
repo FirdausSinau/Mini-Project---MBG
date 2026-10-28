@@ -174,6 +174,39 @@
             </section>
         @endif
 
+        <section class="card detail-grid__full">
+            <h2>Timeline status</h2>
+
+            @if ($report->statusLogs->isEmpty())
+                <p>Belum ada perubahan status.</p>
+            @else
+                <ol class="timeline">
+                    @foreach ($report->statusLogs as $log)
+                        <li class="timeline__item">
+                            <span class="timeline__marker" aria-hidden="true"></span>
+
+                            <div class="timeline__content">
+                                <div class="timeline__transition">
+                                    <span class="status-badge {{ $log->from_status->badgeClass() }}">
+                                        {{ $log->from_status->label() }}
+                                    </span>
+                                    <span class="timeline__arrow" aria-hidden="true">→</span>
+                                    <span class="status-badge {{ $log->to_status->badgeClass() }}">
+                                        {{ $log->to_status->label() }}
+                                    </span>
+                                </div>
+
+                                <p class="timeline__meta">
+                                    {{ $log->actor?->nama_lengkap ?? 'Sistem' }}
+                                    pada {{ $log->created_at?->format('d M Y H:i') }}
+                                </p>
+                            </div>
+                        </li>
+                    @endforeach
+                </ol>
+            @endif
+        </section>
+
         @can('refer', $report)
             @if ($report->status === \App\Enums\ReportStatus::PerluDiteruskan)
                 <section class="card detail-grid__full">
