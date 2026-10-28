@@ -46,7 +46,19 @@
 
         <section class="card">
             <h2>Bukti pendukung</h2>
-            <p>Belum ada bukti. Upload bukti akan ditambahkan pada langkah berikutnya.</p>
+
+            @if ($report->evidence_path)
+                <p>
+                    <a href="{{ route('reports.evidence', $report) }}" target="_blank" rel="noopener">
+                        {{ $report->evidence_original_name ?? 'Lihat bukti' }}
+                    </a>
+                </p>
+                <p class="form-help">
+                    File disimpan secara privat. Hanya pemilik dan petugas berwenang yang bisa membuka.
+                </p>
+            @else
+                <p>Belum ada bukti pendukung.</p>
+            @endif
         </section>
 
         <section class="card">

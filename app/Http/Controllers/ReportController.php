@@ -38,8 +38,19 @@ class ReportController extends Controller
 
     public function store(StoreReportRequest $request): RedirectResponse
     {
+        $data = $request->validated();
+        unset($data['evidence']);
+
+        if ($request->hasFile('evidence')) {
+            $data['evidence_path'] = $request->file('evidence')
+                ->store('evidence', 'local');
+
+            $data['evidence_original_name'] = $request->file('evidence')
+                ->getClientOriginalName();
+        }
+
         $report = $request->user()->reports()->create([
-            ...$request->validated(),
+            ...$data,
             'status' => ReportStatus::Baru,
         ]);
 

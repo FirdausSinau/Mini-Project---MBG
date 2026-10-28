@@ -280,6 +280,11 @@ summary:focus-visible {
     border-color: var(--color-danger);
 }
 
+.form-field input[type="file"] {
+    padding: .5rem;
+    background: #f9fafb;
+}
+
 .form-field textarea {
     width: 100%;
     padding: .7rem .8rem;

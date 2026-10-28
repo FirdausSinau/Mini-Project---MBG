@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportEvidenceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,4 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/{report}', [ReportController::class, 'show'])
         ->whereNumber('report')
         ->name('reports.show');
+    Route::get('/reports/{report}/evidence', [ReportEvidenceController::class, 'show'])
+        ->whereNumber('report')
+        ->name('reports.evidence');
 });

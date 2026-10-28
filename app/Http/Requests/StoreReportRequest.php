@@ -26,6 +26,7 @@ class StoreReportRequest extends FormRequest
             'incident_at' => ['required', 'date', 'before_or_equal:now'],
             'description' => ['required', 'string', 'min:20', 'max:2000'],
             'location_detail' => ['nullable', 'string', 'max:150'],
+            'evidence' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
         ];
     }
 

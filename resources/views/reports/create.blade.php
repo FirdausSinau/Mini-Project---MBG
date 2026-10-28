@@ -10,7 +10,7 @@
     </section>
 
     <section class="card form-card">
-        <form method="POST" action="{{ route('reports.store') }}" class="form form--grid">
+        <form method="POST" action="{{ route('reports.store') }}" enctype="multipart/form-data" class="form form--grid">
             @csrf
 
             <div class="form-field form-field--full">
@@ -94,9 +94,18 @@
             </div>
 
             <div class="form-field form-field--full">
-                <div class="alert alert--info">
-                    Bukti pendukung akan ditambahkan pada langkah berikutnya.
-                </div>
+                <label for="evidence">Bukti pendukung <span class="optional">(opsional)</span></label>
+                <input
+                    id="evidence"
+                    name="evidence"
+                    type="file"
+                    accept=".jpg,.jpeg,.png,.pdf"
+                    @error('evidence') aria-invalid="true" aria-describedby="evidence-error" @enderror
+                >
+                <p class="form-help">JPG, JPEG, PNG, atau PDF. Maksimal 2 MB.</p>
+                @error('evidence')
+                    <p id="evidence-error" class="form-error">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="form-actions form-field--full">
