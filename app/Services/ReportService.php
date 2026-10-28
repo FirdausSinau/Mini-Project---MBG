@@ -20,7 +20,7 @@ class ReportService
 
         if (! $this->canTransition($report->status, $nextStatus)) {
             throw new DomainException(
-                'Laporan ini tidak bisa ditinjau karena statusnya sudah '
+                'Laporan ini tidak bisa ditinjau lagi. Status saat ini: '
                 . $report->status->label() . '.'
             );
         }
