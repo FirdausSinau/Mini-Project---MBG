@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             DemoUserSeeder::class,
             SchoolSeeder::class,
             DistributionSeeder::class,
+            DemoReportSeeder::class,
         ]);
     }
 }
